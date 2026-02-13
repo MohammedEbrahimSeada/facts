@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"   />
+  <meta   name="viewport"   content="width=device-width, initial-scale=1"  />
+  <link rel="stylesheet" href="style.css"   />
+  <title>Boba Tea — Play & Learn</title>
+
+</head>
+
+
+<body>
+
+
+  <div class="container">
+    <header>
+      <img class="logo" src= "bubble tea.jpg" alt="glass of bubble tea"/>
+
+        <h1>Boba Tea | Quick Game & Fun Facts</h1>
+        <p class="lead">Play rock paper scissors with Boba, Straw, and Milk and learn 10 friendly facts about bubble tea.</p>
+    
+    
+    </header>
+
+    <div class="game-grid">
+
+
+      <section class="choices" aria-labelledby="play-heading">
+        <h2 id="play-heading">Play: Choose one</h2>
+
+        <h3> compact game logic: Boba > Straw, Straw > Milk, Milk > Boba</h3>
+
+        <div class="choice-buttons" role="group" aria-label="Game choices">
+
+          <div class="choice" data-move="Boba" >
+            <img src="boba cup.jpg"/>
+            <button type="button">Boba</button>
+          </div>
+
+          <div class="choice" data-move="Straw" >
+            <img src= "straw.jpg" />
+            <button type="button">Straw</button>
+          </div>
+
+          <div class="choice" data-move="Milk" >
+            <img src= "milk.jpg"/>
+            <button type="button">Milk</button>
+          </div>
+
+        </div>
+
+
+        <div class="js-label" aria-live="polite">Pick an option to start,  good luck!</div>
+
+
+        <div class="scoreboard"   aria-hidden="false"  >  <span id="you">You: 0</span> • <span id="comp">Computer: 0</span>  </div>
+
+
+      </section>
+
+
+      <aside class="facts">
+        <h2>Top 10 boba tea facts</h2>
+        <ol>
+          <li>Tapioca pearls are made from cassava — a starchy root — and they get their chewy texture from being cooked and sweetened.</li>
+          <li>Bubble tea (also called boba) was popularized in Taiwan in the 1980s and has since spread worldwide with tons of local twists.</li>
+          <li>Most bubble tea shops let you customize sweetness and ice level, it’s okay to ask for "less sugar" if you want it milder.</li>
+          <li>There are many bases: black or green tea, milk tea, fruit tea, and even coffee or yogurt versions, try different ones to see what you like.</li>
+          <li>Not all toppings are tapioca: there are popping boba (fruit juice centers), jelly, pudding, and more, texture is a big part of the fun.</li>
+          <li>Classic milk tea gets its creaminess from condensed milk or dairy; there are excellent plant-based alternatives like oat or almond milk.</li>
+          <li>Freshly cooked pearls are soft on the outside and chewy inside; leftovers can harden, so they’re best eaten soon after preparation.</li>
+          <li>Flavors range from simple (classic milk, jasmine) to bold (brown sugar, taro, matcha) — brown sugar boba is a popular modern favorite.</li>
+          <li>When ordering, a wide straw is normal, it’s made that way so you can sip pearls along with the drink.</li>
+          <li>Boba culture is social: many shops are cozy hangouts, and regional variations mean discovering new takes if you travel.</li>
+        </ol>
+      </aside>
+    </div>
+
+  </div>
+
+  <script>
+
+
+    // logic: Boba > Straw, Straw > Milk, Milk > Boba
+
+    const label = document.querySelector('.js-label');
+
+    const choices = Array.from(document.querySelectorAll('.choice'));
+    const scoreYou = document.getElementById('you');
+    const scoreComp = document.getElementById('comp');
+
+
+    let you = 0, comp = 0;
+
+    const winsAgainst = { Boba: 'Straw', Straw: 'Milk', Milk: 'Boba' };
+
+
+    function playGame(playerMove){
+      const moves = Object.keys(winsAgainst);
+      const choice = moves[Math.floor(   Math.random()    *   moves.length)];
+
+
+      let result;
+      if(choice === playerMove){ 
+        result='Tie!';
+      }
+      else if(winsAgainst[playerMove] === choice){
+        result='You Win!'; you++;
+      }
+      else{
+        result='You Lose!'; 
+        comp++;
+      }
+
+
+      label.innerText = `${result} — Computer chose ${choice}, you chose ${playerMove}.`;
+
+      scoreYou.innerText = `You: ${you}`;
+
+      scoreComp.innerText = `Computer: ${comp}`;
+
+    }
+
+    choices.forEach(node =>{
+      const btn = node.querySelector('button');
+      const move = node.dataset.move;
+      btn.addEventListener('click', ()=> playGame(move));
+
+
+      node.addEventListener('click', ()=> playGame(move));
+
+      node.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') {    
+        e.preventDefault(); 
+        playGame(move);} });
+
+        
+    });
+  </script>
+</body>
+</html>
